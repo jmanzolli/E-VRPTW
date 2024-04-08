@@ -22,7 +22,7 @@ The updated content is as follows:
 
 1. delete E-VRPTW.dat,  E-VRPTW.ops
 
-2. add `E-VRPTW Instances - CPlEX data` which includes all E-VRPTW Instances with ".dat" format  (For simplicity, we just **set two copies** for each charging station, and CPLEX is employed to solve the MIP formulation) 
+2. add folder `E-VRPTW Instances - CPlEX data` which includes all E-VRPTW Instances with ".dat" format  (For simplicity, we just **set two copies** for each charging station, and CPLEX is employed to solve the MIP formulation) 
 
 3. update E-VRPTW.mod:
 
@@ -34,14 +34,14 @@ The updated content is as follows:
 
    2. as the paper of Schneider et al (2014) states, *"our first objective is to minimize the number of vehicles, i.e., a solution with fewer vehicles is always superior. The second objective is to minimize the total traveled distance"*. However, "*the objective of minimizing the traveled distance is defined in (1)*" does not mention the objective is to minimize the number of vehicles again. Since it is a hierarchical optimization, we set the coefficient of the number of vehicles as large as possible: 
    
-      ```
+      ```AMPL
       // Obejective coefficient
       int M=1000; // implement that first objective is to minimize the number of vehicles
       ```
    
       and the hierarchical optimization in the paper of Schneider et al (2014) is equivalent to the weighted sum optimization of the following two objective functions:
    
-      ```
+      ```AMPL
       // first objective is to minimize the number of vehicles and Objective function [1]
       
       minimize sum(i in StationsCustomers_0, j in StationsCustomers_N1 : i != j) (d[i][j]*x[i][j]) + sum(j in StationsCustomers_N1) x[0][j]*M;
@@ -49,7 +49,7 @@ The updated content is as follows:
    
    3. we just **set two copies** for each charging station in .dat files.
    
-      ```
+      ```AMPL
          	// Each dummy stations is visited at most once [3]
       	forall (i in Stations)
       		sum(j in StationsCustomers_N1 : i != j) x[i][j] <= 1;

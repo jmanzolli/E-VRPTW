@@ -25,7 +25,7 @@
  *****************************************************************************/
 
 //Travel time
-int v = ...; // Average vehicle's velocity [km/h]
+float v = ...; // Average vehicle's velocity [km/h]
 float Time[Total][Total]; // Cost or distance between i and j
 
 // Distance
@@ -51,6 +51,11 @@ float e[Total] = ...; // Lower Bound of the Time Window
 float l[Total] = ...; // Upper Bound of the Time Window
 float s[Total] = ...;
 
+// Obejective coefficient
+int M=1000; // implement that first objective is to minimize the number of vehicles
+int objective1=0;
+float objective2=0;
+
 execute INITIALIZE {
 	for(var i in Total) {
 		for (var j in Total){
@@ -58,7 +63,7 @@ execute INITIALIZE {
 				d[i][j] = 0;
 				Time[i][j] = 0;
 			} else {
-			    d[i][j] = Math.floor(Math.sqrt(Math.pow(XCoord[i]-XCoord[j], 2) + Math.pow(YCoord[i]-YCoord[j], 2))*10)/10;
+			    d[i][j] = Math.sqrt(Math.pow(XCoord[i]-XCoord[j], 2) + Math.pow(YCoord[i]-YCoord[j], 2));
 		        Time[i][j] = d[i][j]/v;
 	       	}
 	     }
@@ -76,9 +81,9 @@ dvar float+ u[Total]; // remaining cargo at vertex i
 dvar float+ y[Total]; // remaining battery at vertex i
 dvar boolean x[StationsCustomers_0][StationsCustomers_N1]; // 1 if a vehicle drives directly from vertex i to vertex j
      
-// Objective function [1]
+// first objective is to minimize the number of vehicles and Objective function [1]
 
-minimize sum(i in StationsCustomers_0, j in StationsCustomers_N1 : i != j) (d[i][j]*x[i][j]);
+minimize sum(i in StationsCustomers_0, j in StationsCustomers_N1 : i != j) (d[i][j]*x[i][j]) + sum(j in StationsCustomers_N1) x[0][j]*M;
 
 /*****************************************************************************
  *
@@ -92,7 +97,7 @@ subject to {
 	forall (i in Customers)
 		sum(j in StationsCustomers_N1 : i != j) x[i][j] == 1;
 		
-   	// Each stations is visited more than once [3]
+   	// Each dummy stations is visited at most once [3]
 	forall (i in Stations)
 		sum(j in StationsCustomers_N1 : i != j) x[i][j] <= 1;
 
@@ -127,9 +132,20 @@ subject to {
 };
 
 execute DISPLAY {
+    for (var j in StationsCustomers_N1) objective1 = objective1 + x[0][j];
+    for (var i in StationsCustomers_0) {
+        for (var j in StationsCustomers_N1) {
+            objective2 = objective2 + d[i][j]*x[i][j]
+        }
+    }     
+    writeln("Vehicle number(m): ", objective1);
+    writeln("Traveled distance(f): ", objective2);
     writeln("Solutions: ");
-		for(var i in StationsCustomers_0)
-			for (var j in StationsCustomers_N1)	
-				if(x[i][j] == 1)
-					writeln("Travel from ", i, " to ", j);					
+    for(var i in StationsCustomers_0) {
+        for (var j in StationsCustomers_N1) {
+            if(x[i][j] == 1) {
+                writeln("Travel from ", i, " to ", j);					
+            }
+        }
+    }
 }

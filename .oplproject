@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+	<version>1.0</version>
+	<configs>
+		<config default="true" name="config" category="opl">
+			<ref name="E-VRPTW.mod" type="model">
+			</ref>
+			<ref name="E-VRPTW Instances - CPLEX data/small_instances/Cplex5er/c103C5.dat" type="data">
+			</ref>
+		</config>
+	</configs>
+	
+</project>

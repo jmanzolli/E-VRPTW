@@ -35,8 +35,8 @@ The updated content is as follows:
    2. as the paper of Schneider et al (2014) states, *"our first objective is to minimize the number of vehicles, i.e., a solution with fewer vehicles is always superior. The second objective is to minimize the total traveled distance"*. However, "*the objective of minimizing the traveled distance is defined in (1)*" does not mention the objective is to minimize the number of vehicles again. Since it is a hierarchical optimization, we set the coefficient of the number of vehicles as large as possible: 
    
       ```AMPL
-      // Obejective coefficient
-      int M=1000; // implement that first objective is to minimize the number of vehicles
+      // Objective coefficient
+      int M=1000; // implement that the first objective is to minimize the number of vehicles
       ```
    
       and the hierarchical optimization in the paper of Schneider et al (2014) is equivalent to the weighted sum optimization of the following two objective functions:
@@ -55,7 +55,7 @@ The updated content is as follows:
       		sum(j in StationsCustomers_N1 : i != j) x[i][j] <= 1;
       ```
 
-Computational results for small-sized instances with 5 customers is shown as follows, where m denotes the vehicle number and f the traveled distance. t denotes the total run-time in seconds. **The left half is the results (CPLEX 12.2) in the paper of Schneider et al (2014), and the right half is the running results (CPLEX 20.1) of the updated CPLEX code**.
+Computational results for small-sized instances with 5 customers are shown as follows, where m denotes the vehicle number and f the traveled distance. t denotes the total run-time in seconds. **The left half is the results (CPLEX 12.2) in the paper of Schneider et al (2014), and the right half is the running results (CPLEX 20.1) of the updated CPLEX code**.
 
 | Instances name | m    | f      | t    | m    | f             | t    |
 | -------------- | ---- | ------ | ---- | ---- | ------------- | ---- |
@@ -74,7 +74,7 @@ Computational results for small-sized instances with 5 customers is shown as fol
 
 Insights on some areas that can be improved:
 
-1.  Since we **set two copies** for each charging station, it is reasonable to add the constraint prohibiting trams from traveling between charging stations belonging to the same copy.
-1.  Since we just **set two copies** for each charging station and test on small-sized instances with 5 customers, it is reasonable to **set larger copies** for each charging station. However, the running time in CPLEX should be also taken into consideration.
+1.  Since we **set two copies** for each charging station, it is reasonable to add the constraint prohibiting trams from travelling between charging stations belonging to the same copy.
+1.  Since we just **set two copies** for each charging station and tested on small-sized instances with 5 customers, it is reasonable to **set larger copies** for each charging station. However, the running time in CPLEX should also be taken into consideration.
 
-(Updated in 08 April 2024, [Zubin Zheng](https://github.com/0SliverBullet))
+(Updated on 08 April 2024, [Zubin Zheng](https://github.com/0SliverBullet))

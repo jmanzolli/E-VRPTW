@@ -22,7 +22,7 @@ The updated content is as follows:
 
 1. delete E-VRPTW.dat,  E-VRPTW.ops
 
-2. add folder `E-VRPTW Instances - CPlEX data` which includes all E-VRPTW Instances with ".dat" format  (For simplicity, we just **set two copies** for each charging station, and CPLEX is employed to solve the MIP formulation) 
+2. add folder `E-VRPTW Instances - CPLEX data` which includes all E-VRPTW Instances with ".dat" format  (For simplicity, we just **set two copies** for each charging station, and CPLEX is employed to solve the MIP formulation) 
 
 3. update E-VRPTW.mod:
 
